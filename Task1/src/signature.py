@@ -7,23 +7,31 @@ from utils import *
 
 class Rsa(object):
 
+    _CERT_FACTORY = None
+
+    @staticmethod
+    def init(cert_factory):
+        Rsa._CERT_FACTORY = cert_factory
+
     def __init__(self):
         self._key_encryptor = KeyEncryptor.get_instance()
         self._key_coder = RsaKeyCoder()
 
-    def sign(self, data, certificate):
+    def sign(self, data, certificate, ca_cert=None):
         if certificate.get_alg_id() != Algorithms.RSA:
             raise ValueError("Impossible to sign with this public key")
+
+        if ca_cert is not None:
+            certificate.validate(ca_cert)
 
         d, n = self._key_coder.decode_private_key(self._key_encryptor.decrypt(certificate.get_private_key()))
         m = bytes_to_int(compute_hash(data))%n
         signature = int_to_bytes(pow(m, d, n))
 
-        return (certificate, data, signature)
+        return signature
 
 
-    def verify(self, signed_message):
-        certificate, data, signature = signed_message
+    def verify(self, certificate, data, signature):
         e, n = self._key_coder.decode_public_key(certificate.get_public_key())
         m = bytes_to_int(compute_hash(data))%n
         if m != pow(bytes_to_int(signature), e, n):

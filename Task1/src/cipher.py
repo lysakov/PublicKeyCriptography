@@ -50,7 +50,7 @@ class Rabin(object):
 
         private_key = self._key_encryptor.decrypt(certificate.get_private_key())
         p, q = self._key_coder.decode_private_key(private_key)
-        n = bytes_to_int(certificate.get_public_key())
+        n = self._key_coder.decode_public_key(certificate.get_public_key())
         block_size = byte_length(int(Decimal(n).sqrt()))
         enc_data = blob.split(Rabin._SPLITTER)
         data = [self.__decrypt_block(blob, p, q, block_size, n) for blob in enc_data]
@@ -91,16 +91,24 @@ class Rabin(object):
 class RabinKeyCoder(object):
 
     def encode_public_key(self, n):
-        return int_to_bytes(n)
+        return int_to_bytes(Algorithms.RABIN.value) + int_to_bytes(n)
 
     def decode_public_key(self, blob):
-        return bytes_to_int(blob)
+        alg = blob[0]
+        if Algorithms(alg) != Algorithms.RABIN:
+            raise ValueError("Wrong key algorithm")
+
+        return bytes_to_int(blob[1:])
 
     def encode_private_key(self, p, q):
-        return int_to_bytes(p) + int_to_bytes(q)
+        return int_to_bytes(Algorithms.RABIN.value) + int_to_bytes(p) + int_to_bytes(q)
 
     def decode_private_key(self, blob):
-        p = bytes_to_int(blob[:len(blob)//2])
-        q = bytes_to_int(blob[len(blob)//2:])
+        alg = blob[0]
+        if Algorithms(alg) != Algorithms.RABIN:
+            raise ValueError("Wrong key algorithm")
+
+        p = bytes_to_int(blob[1:][:len(blob[1:])//2])
+        q = bytes_to_int(blob[1:][len(blob[1:])//2:])
 
         return p, q

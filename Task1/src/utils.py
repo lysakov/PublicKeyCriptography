@@ -6,10 +6,10 @@ from Cryptodome.Util import number
 from math import prod
 
 def int_to_bytes(n : int) -> bytes:
-    return n.to_bytes((n.bit_length() + 7) // 8, sys.byteorder)
+    return n.to_bytes((n.bit_length() + 7) // 8, "little")
 
 def bytes_to_int(bytes_arr : bytes) -> int:
-    return int.from_bytes(bytes_arr, sys.byteorder)
+    return int.from_bytes(bytes_arr, "little")
 
 def string_to_bytes(string : str) -> bytes:
     return string.encode("utf-16")
