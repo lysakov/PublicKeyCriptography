@@ -7,12 +7,6 @@ from utils import *
 
 class Rsa(object):
 
-    _CERT_FACTORY = None
-
-    @staticmethod
-    def init(cert_factory):
-        Rsa._CERT_FACTORY = cert_factory
-
     def __init__(self):
         self._key_encryptor = KeyEncryptor.get_instance()
         self._key_coder = RsaKeyCoder()

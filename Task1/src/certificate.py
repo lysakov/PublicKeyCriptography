@@ -85,7 +85,7 @@ class CertificateCoder(object):
         offset += 1
 
         """4 bytes for serial number"""
-        serial_number = blob[offset:offset+4]
+        serial_number = bytes_to_int(blob[offset:offset+4])
         offset += 4
 
         pub_key_len = bytes_to_int(blob[offset:offset+4])

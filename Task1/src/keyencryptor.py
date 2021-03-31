@@ -11,6 +11,9 @@ class PasswordController(object):
     def get(self):
         pass
 
+    def get_new_password(self):
+        pass
+
 class KeyEncryptor(object):
 
     _PADDING = bytes.fromhex("0000")
@@ -29,7 +32,7 @@ class KeyEncryptor(object):
         return KeyEncryptor._key_encryptor
 
     def encrypt(self, key : bytes):
-        password_hash = compute_hash(string_to_bytes(self._password_interactor.get()))
+        password_hash = compute_hash(string_to_bytes(self._password_interactor.get_new_password()))
         cipher = AES.new(password_hash, AES.MODE_EAX, KeyEncryptor._iv)
         enc_key = cipher.encrypt(KeyEncryptor._PADDING + key)
 
