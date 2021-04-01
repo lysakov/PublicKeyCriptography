@@ -46,6 +46,7 @@ class Encryptor(object):
         with open(file_path, "rb") as data_inp, open(output_path, "wb") as outp, open(cert_path, "rb") as cert_inp:
             plaintext = data_inp.read()
             cert = self._cert_factory.generate_certificate(base64.b32decode(cert_inp.read()))
+            cert.validate(ca)
             outp.write(base64.b32encode(self._cipher.encrypt(plaintext, cert)))
 
     def decrypt(self, file_path : str, cert_path: str, output_path : str):
