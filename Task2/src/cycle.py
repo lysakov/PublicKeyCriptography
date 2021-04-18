@@ -4,7 +4,11 @@ from math import gcd
 
 class CycleAttack(Attack):
 
-    def attack(self, keys, cipher=None):
+    def __init__(self, timeout=60):
+        super().__init__(timeout=timeout)
+        self._attack_func = self.__cycle
+
+    def __cycle(self, keys, cipher=None):
         self._logger.info("\n***CYCLE ATTACK***")
         e, N = keys
         c = cipher

@@ -5,7 +5,11 @@ import decimal
 
 class LowExponentAttack(Attack):
 
-    def attack(self, keys, cipher=None):
+    def __init__(self, timeout=60):
+        super().__init__(timeout=timeout)
+        self._attack_func = self.__low_exponent
+
+    def __low_exponent(self, keys, cipher=None):
         e, N = keys
         c = cipher
         self._logger.info("\n***LOW EXPONENT ATTACK***")

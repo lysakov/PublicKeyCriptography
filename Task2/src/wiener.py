@@ -6,8 +6,9 @@ class WienerAttack(Attack):
 
     def __init__(self, timeout=60):
         super().__init__(timeout=timeout)
+        self._attack_func= self.__wiener
 
-    def attack(self, keys, cipher=None):
+    def __wiener(self, keys, cipher=None):
         e, N = keys
         cont_fraction = get_continued_fraction(e, N)
         self._logger.info("\n***WIENER ATTACK***")

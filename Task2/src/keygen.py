@@ -14,15 +14,16 @@ class KeyGen(object):
             d = randint(0, int(Decimal(1/3) * Decimal(p*q)**Decimal(1/4)))
         e = pow(d, -1, (p - 1)*(q - 1))
 
-        return (e, p*q)
+        return (d, e, p*q)
 
     def get_weak_low_exponent_key(self, n):
         p, q = get_random_prime(n), get_random_prime(n)
         e = 0
         while math.gcd(e, (p - 1)*(q - 1)) != 1:
             e = randint(0, 2*n)
+        d = pow(e, -1, (p - 1)*(q - 1))
 
-        return (e, p*q)
+        return (d, e, p*q)
 
     def get_weak_cycle_key(self, n):
         p, q = self.__get_prime_with_no_dominant_divider(n), self.__get_prime_with_no_dominant_divider(n)

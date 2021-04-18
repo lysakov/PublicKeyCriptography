@@ -31,13 +31,13 @@ class Test(unittest.TestCase):
         self.assertEqual(N % p, 0)
 
     def test_wiener(self):
-        e, N = self.keygen.get_weak_wiener_keys(128)
+        d, e, N = self.keygen.get_weak_wiener_keys(128)
         wiener = WienerAttack()
         keys = wiener.attack((e, N))
         self.assertEqual(keys[0]*keys[1], N)
 
     def test_low_exponent(self):
-        e, N = self.keygen.get_weak_low_exponent_key(64)
+        d, e, N = self.keygen.get_weak_low_exponent_key(64)
         low_exponent = LowExponentAttack()
         m = 2 #randint(0, N)
         m1 = low_exponent.attack((e, N), pow(m, e, N))
