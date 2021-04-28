@@ -2,6 +2,7 @@ from utils import *
 
 from random import randint
 from decimal import Decimal
+from enum import Enum
 
 import math
 
@@ -57,6 +58,37 @@ class KeyGen(object):
 
         return (d, e, p*q)
 
+    def generate(self, n, attack_list):
+        if Attacks.LOW_EXPONENT in attack_list and Attacks.WIENER in attack_list:
+            raise ValueError("Impossible to generate key valnuarable to both Wiener and low exponent attack")
+            
+        p, q = 0, 0
+        if Attacks.P1_POLLARD in attack_list:
+            p = self.__get_b_smooth_prime(n, 2**10)
+        else:
+            p = get_random_prime(n)
+
+        if Attacks.CYCLE in attack_list:
+            q = self.__get_prime_with_no_dominant_divider(n)
+        else:
+            q = get_random_prime(n)
+
+        e, d = 0, 0
+        if Attacks.LOW_EXPONENT in attack_list:
+            while math.gcd(e, (p - 1)*(q - 1)) != 1:
+                e = randint(0, 2*n)
+            d = pow(e, -1, (p - 1)*(q - 1))
+        elif Attacks.WIENER in attack_list:
+            while math.gcd(d, (p - 1)*(q - 1)) != 1:
+                d = randint(0, int(Decimal(1/3) * Decimal(p*q)**Decimal(1/4)))
+            e = pow(d, -1, (p - 1)*(q - 1))
+        else:
+            while math.gcd(e, (p - 1)*(q - 1)) != 1:
+                e = randint(0, (p - 1)*(q - 1))
+            d = pow(e, -1, (p - 1)*(q - 1))
+
+        return (d, e, p*q)
+
     def __get_prime_with_no_dominant_divider(self, n):
         divider_num = 4
         max_divider_len = n // divider_num 
@@ -84,3 +116,11 @@ class KeyGen(object):
                 p1 *= devider
 
         return p1 + 1
+
+class Attacks(Enum):
+
+    RHO_POLLARD = 1
+    P1_POLLARD = 2
+    LOW_EXPONENT = 3
+    WIENER = 4
+    CYCLE = 5

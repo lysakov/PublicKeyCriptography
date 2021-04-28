@@ -1,4 +1,4 @@
-from keygen import KeyGen
+from keygen import KeyGen, Attacks
 from rho_pollard import RhoPollardAttack
 from wiener import WienerAttack
 from low_exponent import LowExponentAttack
@@ -26,13 +26,15 @@ if __name__ == "__main__":
 
         n = ""
         n = input()
-        i = int(choice(n.split(',')))
+        i = list(map(lambda x: Attacks(int(x)), n.split(',')))
 
         print("Enter security parametr:")
         n = input()
 
         keygen = KeyGen()
-        d, e, N = None, None, None
+        d, e, N = keygen.generate(int(n), i)
+
+        '''
         if i == 1:
             d, e, N = keygen.get_weak_rho_pollard_key(int(n))
         elif i == 2:
@@ -43,6 +45,7 @@ if __name__ == "__main__":
             d, e, N = keygen.get_weak_wiener_keys(int(n))
         elif i == 5:
             d, e, N = keygen.get_weak_cycle_key(int(n))
+        '''
 
         print(f"d = {d}")
         print(f"e = {e}")
