@@ -7,6 +7,7 @@ from utils import *
 from keygen import KeyGenerator
 from gelfond import GelfondAttack
 from pohlig_hellman import PohligHellmanAttack
+from rho_pollard import RhoPollardAttack
 
 class Test(unittest.TestCase):
 
@@ -34,6 +35,11 @@ class Test(unittest.TestCase):
         x = pohlig_hellman.attack((y, g, p))
         self.assertEqual(pow(g, x, p), y)
 
+    def test_rho_pollard(self):
+        rho_pollard = RhoPollardAttack()
+        y, g, p = self.keygen.get_key(16)
+        x = rho_pollard.attack((y, g, p))
+        self.assertEqual(pow(g, x, p), y)        
 
 if __name__ == "__main__":
     unittest.main()
