@@ -9,10 +9,16 @@ from gelfond import GelfondAttack
 from pohlig_hellman import PohligHellmanAttack
 from rho_pollard import RhoPollardAttack
 
+import logging
+
 class Test(unittest.TestCase):
 
     def setUp(self):
         self.keygen = KeyGenerator()
+        logging.basicConfig(filename="log.txt", 
+                            level=logging.INFO, 
+                            filemode="w",
+                            format="%(message)s")
 
     def test_factorize(self):
         p = get_random_prime(32)

@@ -8,20 +8,27 @@ class RhoPollardAttack(Attack):
         self._attack_func = self.__rho_pollard
 
     def __rho_pollard(self, keys, cipher):
+        self._logger.info("Rho-Pollard attack")
         y, g, p = keys
+        self._logger.info(f"{g}^x = {y} mod {p}")
         h = (y, 0, 1)
         T = {0 : h}
         
         for i in range(1, p):
             h = self.__f(y, g, p, h)
+            self._logger.info(f"i = {i}, h = {h[0]}. Showing table content:")
             for ind, el in T.items():
+                self._logger.info(f"{ind}: h = {el[0]} deg(g) = {el[1]} deg(y) = {el[2]}")
                 if el[0] == h[0]:
+                    self._logger.info(f"Cycle found")
                     dx = h[1] - el[1]
                     dy = el[2] - h[2]
                     x, d = self.__solve_linear(dy, dx, p - 1)
                     for i in range(d):
                         if pow(g, x + i*(p - 1)//d, p) == y:
-                            return (x + i*(p - 1)//d) % (p - 1)
+                            x = (x + i*(p - 1)//d) % (p - 1)
+                            self._logger.info(f"x = {x}")
+                            return x
 
             T[self.__v2(i)] = h
 
