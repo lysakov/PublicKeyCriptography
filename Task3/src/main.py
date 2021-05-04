@@ -28,16 +28,16 @@ if __name__ == "__main__":
         logging.basicConfig(filename="log.txt", level=logging.INFO, filemode="w")
         print("Enter time limit:")
         n = int(input())
-        print("Enter open exponent:")
-        e = int(input())
-        print("Enter N:")
-        N = int(input())
-        print("Enter encrypted message:")
-        c = int(input())
+        print("Enter modulo:")
+        p = int(input())
+        print("Enter primitive root of group:")
+        g = int(input())
+        print("Enter element of the group:")
+        y = int(input())
 
         attacks = [RhoPollardAttack(n), PohligHellmanAttack(n), GelfondAttack(timeout=n)]
         for attack in attacks:
             try:
-                attack.attack((e, N), c)
+                attack.attack((y, g, p))
             except TimeoutError:
                 attack.log("Time limit reached")
