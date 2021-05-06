@@ -5,7 +5,7 @@ sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../s
 
 from utils import *
 from keygen import KeyGenerator
-from gelfond import GelfondAttack
+from big_step_little_step import GelfondAttack
 from pohlig_hellman import PohligHellmanAttack
 from rho_pollard import RhoPollardAttack
 

@@ -11,13 +11,13 @@ class P1Pollard(Attack):
         self._attack_func = self.__p1_pollard
 
     def __p1_pollard(self, keys, cipher=None):
-        self._logger.info(f"\n***p - 1 POLLARD ATTACK***")
+        self._logger.info(f"***p - 1 POLLARD ATTACK***")
         e, N = keys
 
         while True:
-            self._logger.info(f"\nB = {self._B}")
+            self._logger.info(f"B = {self._B}")
             a = randint(2, N - 1)
-            self._logger.info(f"\na = {a}")
+            self._logger.info(f"a = {a}")
             d = gcd(a, N)
             if d > 2:
                 return d
@@ -26,11 +26,11 @@ class P1Pollard(Attack):
                 if is_prime(q):
                     l = self.__log(q, N)
                     a = pow(a, pow(q, l), N)
-                    self._logger.info(f"\nq = {q}, l = {l}, a = {a}")
+                    self._logger.info(f"q = {q}, l = {l}, a = {a}")
 
             d = gcd(a - 1, N)
             if d != 1 and d != N:
-                self._logger.info(f"\np = {d}, q = {N // d}")
+                self._logger.info(f"p = {d}, q = {N // d}")
                 return d
             else:
                 self._B = self._B*2

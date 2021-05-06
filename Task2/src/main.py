@@ -52,7 +52,7 @@ if __name__ == "__main__":
         print(f"N = {N}")
 
     elif n == "2":
-        logging.basicConfig(filename="log.txt", level=logging.INFO, filemode="w")
+        logging.basicConfig(filename="log.txt", level=logging.INFO, filemode="w", format="%(message)s")
         print("Enter time limit:")
         n = int(input())
         print("Enter open exponent:")

@@ -8,6 +8,15 @@ import math
 
 class KeyGen(object):
 
+    def get_key(self, n):
+        p, q = get_random_prime(n), get_random_prime(n)
+        d = 0
+        while math.gcd(d, (p - 1)*(q - 1)) != 1:
+            d = randint(0, (p - 1)*(q - 1))
+        e = pow(d, -1, (p - 1)*(q - 1))
+
+        return (d, e, p*q)
+
     def get_weak_wiener_keys(self, n):
         p, q = get_random_prime(n), get_random_prime(n)
         d = 0

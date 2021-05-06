@@ -9,7 +9,7 @@ class CycleAttack(Attack):
         self._attack_func = self.__cycle
 
     def __cycle(self, keys, cipher=None):
-        self._logger.info("\n***CYCLE ATTACK***")
+        self._logger.info("***CYCLE ATTACK***")
         e, N = keys
         c = cipher
         if c is None:
@@ -23,6 +23,6 @@ class CycleAttack(Attack):
             d = gcd(c1 - c, N)
             cnt += 1
 
-        self._logger.info(f"\nN was factorized in {cnt} iterations")
+        self._logger.info(f"N was factorized in {cnt} iterations")
 
         return d

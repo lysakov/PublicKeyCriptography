@@ -1,6 +1,6 @@
 from keygen import KeyGenerator
 from rho_pollard import RhoPollardAttack
-from gelfond import GelfondAttack
+from big_step_little_step import GelfondAttack
 from pohlig_hellman import PohligHellmanAttack
 
 from random import choice
@@ -25,7 +25,7 @@ if __name__ == "__main__":
 
 
     elif n == "1":
-        logging.basicConfig(filename="log.txt", level=logging.INFO, filemode="w")
+        logging.basicConfig(filename="log.txt", level=logging.INFO, filemode="w", format="%(message)s")
         print("Enter time limit:")
         n = int(input())
         print("Enter modulo:")

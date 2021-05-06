@@ -11,8 +11,8 @@ class WienerAttack(Attack):
     def __wiener(self, keys, cipher=None):
         e, N = keys
         cont_fraction = get_continued_fraction(e, N)
-        self._logger.info("\n***WIENER ATTACK***")
-        self._logger.info(f"\ne/N = {e}/{N} = {cont_fraction}")
+        self._logger.info("***WIENER ATTACK***")
+        self._logger.info(f"e/N = {e}/{N} = {cont_fraction}")
 
         k = [0, 1]
         d = [1, 0]
@@ -25,25 +25,28 @@ class WienerAttack(Attack):
                 continue
             phi, r = divmod(e*d[i] - 1, k[i])
             if r == 0:
-                self._logger.info(f"\nSolving equation: x**2 + {-(N - phi + 1)}*x + {N} = 0")
+                self._logger.info(f"Solving equation: x**2 + {-(N - phi + 1)}*x + {N} = 0")
                 p, q = self.__solve_eqv(N, phi)
                 if p is None:
-                    self._logger.info("\nEquation has no integer roots. Contunue searching k and d...")
+                    self._logger.info("Equation has no integer roots. Continue searching k and d...")
                     continue
-                self._logger.info(f"\np = {p}, q = {q}")
+                self._logger.info(f"p = {p}, q = {q}")
                 if p*q == N:
                     return p, q
                 else:
                     self._logger.info(f"{p} * {q} != {N}")
                     continue
 
-        self._logger.info("\nUnable to find factorization of N")
+        self._logger.info("Impossible to find factorization of N")
 
         return None
 
     def __solve_eqv(self, N, phi):
         p = -(N - phi + 1)
         q = N
+        if p**2 - 4*q < 0:
+            return None, None
+
         D = self.__sqrt(p**2 - 4*q)
         if D is None:
             return None, None

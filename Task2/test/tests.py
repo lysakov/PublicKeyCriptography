@@ -18,7 +18,7 @@ class Test(unittest.TestCase):
 
     def setUp(self):
         self.keygen = KeyGen()
-        logging.basicConfig(filename="log.txt", level=logging.INFO, filemode="w")
+        logging.basicConfig(filename="log.txt", level=logging.INFO, filemode="w", format="%(message)s")
 
     def test_miller_rabin(self):
         p = 223
